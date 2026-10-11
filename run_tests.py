@@ -4,24 +4,164 @@ import shutil
 import subprocess
 from datetime import datetime
 
+PRINT_AND_CSS_SNIPPET = """
+<style id="qa-dashboard-modern-styles">
+ @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-PRINT_BUTTON_SNIPPET = """
-<!-- INJECTED QA PRINT TOOLBAR & PRINT-FRIENDLY CSS -->
-<style id="qa-print-styles">
+
+ body {
+   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+   background-color: #f8fafc !important;
+   color: #1e293b !important;
+   font-size: 13px !important;
+   margin: 0 !important;
+   padding: 30px 45px !important;
+   line-height: 1.6 !important;
+ }
+
+
+ h1 {
+   font-size: 24px !important;
+   font-weight: 700 !important;
+   color: #0f172a !important;
+   margin-bottom: 25px !important;
+   display: flex !important;
+   align-items: center !important;
+   gap: 12px !important;
+   letter-spacing: -0.5px !important;
+ }
+
+
+ h2 {
+   font-size: 15px !important;
+   font-weight: 600 !important;
+   color: #475569 !important;
+   margin-top: 28px !important;
+   margin-bottom: 14px !important;
+   text-transform: uppercase !important;
+   letter-spacing: 0.5px !important;
+ }
+
+
+ p {
+   color: #475569 !important;
+ }
+
+
+ /* Environment & Results Tables */
+ table#environment, table#results-table {
+   width: 100% !important;
+   background: #ffffff !important;
+   border-radius: 10px !important;
+   border: 1px solid #e2e8f0 !important;
+   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+   border-collapse: separate !important;
+   border-spacing: 0 !important;
+   overflow: hidden !important;
+   margin-bottom: 30px !important;
+ }
+
+
+ th {
+   background: #f1f5f9 !important;
+   color: #334155 !important;
+   font-weight: 600 !important;
+   text-transform: uppercase !important;
+   font-size: 11px !important;
+   letter-spacing: 0.6px !important;
+   padding: 13px 18px !important;
+   border-bottom: 1px solid #cbd5e1 !important;
+ }
+
+
+ td {
+   padding: 13px 18px !important;
+   border-bottom: 1px solid #f1f5f9 !important;
+   color: #334155 !important;
+   vertical-align: middle !important;
+ }
+
+
+ tr:last-child td {
+   border-bottom: none !important;
+ }
+
+
+ tbody tr:hover {
+   background-color: #f8fafc !important;
+ }
+
+
+ /* Status Badges */
+ span.passed, .col-result.passed {
+   background-color: #dcfce7 !important;
+   color: #15803d !important;
+   padding: 4px 12px !important;
+   border-radius: 9999px !important;
+   font-weight: 600 !important;
+   font-size: 11px !important;
+   display: inline-block !important;
+   border: 1px solid #bbf7d0 !important;
+ }
+
+
+ span.failed, .col-result.failed {
+   background-color: #fee2e2 !important;
+   color: #b91c1c !important;
+   padding: 4px 12px !important;
+   border-radius: 9999px !important;
+   font-weight: 600 !important;
+   font-size: 11px !important;
+   display: inline-block !important;
+   border: 1px solid #fecaca !important;
+ }
+
+
+ span.skipped, .col-result.skipped {
+   background-color: #fef3c7 !important;
+   color: #b45309 !important;
+   padding: 4px 12px !important;
+   border-radius: 9999px !important;
+   font-weight: 600 !important;
+   font-size: 11px !important;
+   display: inline-block !important;
+   border: 1px solid #fde68a !important;
+ }
+
+
+ /* Filters */
+ div.filters {
+   background: #ffffff !important;
+   padding: 14px 20px !important;
+   border-radius: 10px !important;
+   border: 1px solid #e2e8f0 !important;
+   box-shadow: 0 2px 4px rgba(0,0,0,0.03) !important;
+   margin-bottom: 25px !important;
+   display: flex !important;
+   gap: 15px !important;
+   align-items: center !important;
+   font-weight: 500 !important;
+ }
+
+
+ /* Floating Print Toolbar */
  .qa-toolbar {
    position: fixed;
    top: 15px;
-   right: 25px;
+   right: 30px;
    z-index: 999999;
    display: flex;
-   gap: 10px;
+   gap: 12px;
    align-items: center;
    background: rgba(255, 255, 255, 0.95);
-   padding: 6px 12px;
-   border-radius: 8px;
-   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+   backdrop-filter: blur(8px);
+   padding: 7px 14px;
+   border-radius: 10px;
+   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.05);
    border: 1px solid #e2e8f0;
  }
+
+
  .qa-print-btn {
    background: linear-gradient(135deg, #2563eb, #1d4ed8);
    color: #ffffff !important;
@@ -34,33 +174,43 @@ PRINT_BUTTON_SNIPPET = """
    display: inline-flex;
    align-items: center;
    gap: 7px;
-   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+   font-family: inherit;
    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
    transition: all 0.2s ease;
-   text-decoration: none;
  }
+
+
  .qa-print-btn:hover {
    background: linear-gradient(135deg, #1d4ed8, #1e40af);
    transform: translateY(-1px);
    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.45);
  }
- .qa-print-btn:active {
-   transform: translateY(0);
- }
+
+
  .qa-badge-history {
    font-size: 11px;
    color: #64748b;
    font-family: monospace;
-   font-weight: 500;
+   font-weight: 600;
+   background: #f1f5f9;
+   padding: 4px 8px;
+   border-radius: 4px;
  }
+
+
  @media print {
-   .qa-toolbar, .no-print {
+   .qa-toolbar, .no-print, div.filters {
      display: none !important;
    }
    body {
+     background: #ffffff !important;
      -webkit-print-color-adjust: exact !important;
      print-color-adjust: exact !important;
-     color: #000 !important;
+     padding: 0 !important;
+   }
+   table#environment, table#results-table {
+     box-shadow: none !important;
+     border: 1px solid #ccc !important;
    }
    table {
      page-break-inside: auto;
@@ -71,6 +221,8 @@ PRINT_BUTTON_SNIPPET = """
    }
  }
 </style>
+
+
 <div class="qa-toolbar no-print">
  <span class="qa-badge-history">REPORT_TIMESTAMP_PLACEHOLDER</span>
  <button class="qa-print-btn" onclick="window.print()" title="Print report or save as PDF">
@@ -85,17 +237,19 @@ PRINT_BUTTON_SNIPPET = """
 """
 
 
-def inject_print_toolbar(file_path: str, timestamp_str: str):
-   """Injects print button and print styling into the HTML report"""
+def inject_styles_and_toolbar(file_path: str, timestamp_str: str):
+   """Injects modern styles, print button, and print CSS into the generated HTML report"""
    try:
        with open(file_path, "r", encoding="utf-8") as f:
            content = f.read()
 
 
-       snippet = PRINT_BUTTON_SNIPPET.replace("REPORT_TIMESTAMP_PLACEHOLDER", timestamp_str)
+       snippet = PRINT_AND_CSS_SNIPPET.replace("REPORT_TIMESTAMP_PLACEHOLDER", timestamp_str)
 
 
-       if "</body>" in content:
+       if "</head>" in content:
+           new_content = content.replace("</head>", f"{snippet}\n</head>")
+       elif "</body>" in content:
            new_content = content.replace("</body>", f"{snippet}\n</body>")
        else:
            new_content = content + snippet
@@ -104,7 +258,7 @@ def inject_print_toolbar(file_path: str, timestamp_str: str):
        with open(file_path, "w", encoding="utf-8") as f:
            f.write(new_content)
    except Exception as e:
-       print(f"Warning: Could not inject print button: {e}")
+       print(f"Warning: Could not inject styles: {e}")
 
 
 def main():
@@ -151,9 +305,9 @@ def main():
    result = subprocess.run(cmd, env=env)
 
 
-   # Inject the Print / PDF toolbar into the generated report
+   # Inject the Modern CSS + Print/PDF Toolbar into the freshly generated report
    if os.path.exists(latest_report):
-       inject_print_toolbar(latest_report, timestamp_str)
+       inject_styles_and_toolbar(latest_report, timestamp_str)
        # Create an archived copy with timestamp so previous reports are NEVER lost
        shutil.copy2(latest_report, archived_report)
 
@@ -170,7 +324,7 @@ def main():
    print(f"  📊 Latest Report: file://{latest_report}")
    print(f"  📁 Archived Report: file://{archived_report}")
    print(f"  🗄️ Total Historical Runs Saved in reports/archive/: {archived_count}")
-   print(f"  🖨️ Interactive 'Print / Save as PDF' button added to report!")
+   print(f"  🎨 Modern CSS & 'Print / Save as PDF' Toolbar embedded!")
    print("=" * 70)
 
 
