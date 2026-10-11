@@ -4,7 +4,7 @@ class Config:
    # URL to the Frontend under test
    # By default, points to local test server serving the FE repository
    FE_DIR = os.path.abspath(
-       os.path.join(os.path.dirname(__file__), "..", "Blog-posting-platform-Front-End-fe-implementation")
+       os.path.join(os.path.dirname(__file__), "..", "Blog-Poster-Project-FE")
    )
    PORT = int(os.getenv("PORT", "5500"))
    BASE_URL = os.getenv("BASE_URL", f"http://127.0.0.1:{PORT}/app/index.html")

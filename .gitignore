@@ -10,3 +10,9 @@ wheels/
 .venv
 environments
 env 
+
+# Test Reports & Outputs
+reports/*.html
+reports/archive/
+reports/assets/
+.pytest_cache/
