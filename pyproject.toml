@@ -1,0 +1,17 @@
+[project]
+name = "blog-poster-project-qa-automation"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "uddeepika-liyanaarachchi-prodoscore", email = "uddeepika.liyanaarachchi@prodoscore.com" }
+]
+requires-python = ">=3.14"
+dependencies = []
+
+[project.scripts]
+blog-poster-project-qa-automation = "blog_poster_project_qa_automation:main"
+
+[build-system]
+requires = ["uv_build>=0.12.23,<0.13.0"]
+build-backend = "uv_build"
