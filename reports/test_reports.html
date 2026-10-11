@@ -1,119 +1,178 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html>
- <head>
-   <meta charset="utf-8"/>
-   <title id="head-title">test_report.html</title>
-  
-  
- </head>
- <body>
-   <h1 id="title">test_report.html</h1>
-   <p>Report generated on 11-Oct-2026 at 16:51:18 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a>
-       v4.2.0</p>
-   <div id="environment-header">
-     <h2>Environment</h2>
-   </div>
-   <table id="environment"></table>
-   <!-- TEMPLATES -->
-     <template id="template_environment_row">
-     <tr>
-       <td></td>
-       <td></td>
-     </tr>
-   </template>
-   <template id="template_results-table__body--empty">
-     <tbody class="results-table-row">
-       <tr id="not-found-message">
-         <td colspan="4">No results found. Check the filters.</td>
-       </tr>
-     </tbody>
-   </template>
-   <template id="template_results-table__tbody">
-     <tbody class="results-table-row">
-       <tr class="collapsible">
-       </tr>
-       <tr class="extras-row">
-         <td class="extra" colspan="4">
-           <div class="extraHTML"></div>
-           <div class="media">
-             <div class="media-container">
-                 <div class="media-container__nav--left">&lt;</div>
-                 <div class="media-container__viewport">
-                   <img src="" />
-                   <video controls>
-                     <source src="" type="video/mp4">
-                   </video>
-                 </div>
-                 <div class="media-container__nav--right">&gt;</div>
-               </div>
-               <div class="media__name"></div>
-               <div class="media__counter"></div>
-           </div>
-           <div class="logwrapper">
-             <div class="logexpander"></div>
-             <div class="log"></div>
-           </div>
-         </td>
-       </tr>
-     </tbody>
-   </template>
-   <!-- END TEMPLATES -->
-   <div class="summary">
-     <div class="summary__data">
-       <h2>Summary</h2>
-       <div class="additional-summary prefix">
-       </div>
-       <p class="run-count">17 tests took 00:01:54.</p>
-       <p class="filter">(Un)check the boxes to filter the results.</p>
-       <div class="summary__reload">
-         <div class="summary__reload__button hidden" onclick="location.reload()">
-           <div>There are still tests running. <br />Reload this page to get the latest results!</div>
-         </div>
-       </div>
-       <div class="summary__spacer"></div>
-       <div class="controls">
-         <div class="filters">
-           <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="failed" disabled>
-           <span class="failed">0 Failed,</span>
-           <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="passed" >
-           <span class="passed">17 Passed,</span>
-           <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="skipped" disabled>
-           <span class="skipped">0 Skipped,</span>
-           <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="xfailed" disabled>
-           <span class="xfailed">0 Expected failures,</span>
-           <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="xpassed" disabled>
-           <span class="xpassed">0 Unexpected passes,</span>
-           <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="error" disabled>
-           <span class="error">0 Errors,</span>
-           <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="rerun" disabled>
-           <span class="rerun">0 Reruns</span>
-           <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="retried" disabled>
-           <span class="retried">0 Retried,</span>
-         </div>
-         <div class="collapse">
-           <button id="show_all_details">Show all details</button>&nbsp;/&nbsp;<button id="hide_all_details">Hide all details</button>
-         </div>
-       </div>
-     </div>
-     <div class="additional-summary summary">
-     </div>
-     <div class="additional-summary postfix">
-     </div>
-   </div>
-   <table id="results-table">
-     <thead id="results-table-head">
-       <tr>
-         <th class="sortable" data-column-type="result">Result</th>
-         <th class="sortable" data-column-type="testId">Test</th>
-         <th class="sortable" data-column-type="duration">Duration</th>
-         <th>Links</th>
-       </tr>
-     </thead>
-   </table>
- <footer>
- 
- </footer>
- </body>
+  <head>
+    <meta charset="utf-8" />
+    <title id="head-title">test_report.html</title>
+    <style rel="stylesheet" href="report.css"></style>
+  </head>
+  <body>
+    <h1 id="title">test_report.html</h1>
+    <p>
+      Report generated on 11-Oct-2026 at 16:51:18 by
+      <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v4.2.0
+    </p>
+    <div id="environment-header">
+      <h2>Environment</h2>
+    </div>
+    <table id="environment"></table>
+    <!-- TEMPLATES -->
+    <template id="template_environment_row">
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+    </template>
+    <template id="template_results-table__body--empty">
+      <tbody class="results-table-row">
+        <tr id="not-found-message">
+          <td colspan="4">No results found. Check the filters.</td>
+        </tr>
+      </tbody>
+    </template>
+    <template id="template_results-table__tbody">
+      <tbody class="results-table-row">
+        <tr class="collapsible"></tr>
+        <tr class="extras-row">
+          <td class="extra" colspan="4">
+            <div class="extraHTML"></div>
+            <div class="media">
+              <div class="media-container">
+                <div class="media-container__nav--left">&lt;</div>
+                <div class="media-container__viewport">
+                  <img src="" />
+                  <video controls>
+                    <source src="" type="video/mp4" />
+                  </video>
+                </div>
+                <div class="media-container__nav--right">&gt;</div>
+              </div>
+              <div class="media__name"></div>
+              <div class="media__counter"></div>
+            </div>
+            <div class="logwrapper">
+              <div class="logexpander"></div>
+              <div class="log"></div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </template>
+    <!-- END TEMPLATES -->
+    <div class="summary">
+      <div class="summary__data">
+        <h2>Summary</h2>
+        <div class="additional-summary prefix"></div>
+        <p class="run-count">17 tests took 00:01:54.</p>
+        <p class="filter">(Un)check the boxes to filter the results.</p>
+        <div class="summary__reload">
+          <div
+            class="summary__reload__button hidden"
+            onclick="location.reload()"
+          >
+            <div>
+              There are still tests running. <br />Reload this page to get the
+              latest results!
+            </div>
+          </div>
+        </div>
+        <div class="summary__spacer"></div>
+        <div class="controls">
+          <div class="filters">
+            <input
+              checked="true"
+              class="filter"
+              name="filter_checkbox"
+              type="checkbox"
+              data-test-result="failed"
+              disabled
+            />
+            <span class="failed">0 Failed,</span>
+            <input
+              checked="true"
+              class="filter"
+              name="filter_checkbox"
+              type="checkbox"
+              data-test-result="passed"
+            />
+            <span class="passed">17 Passed,</span>
+            <input
+              checked="true"
+              class="filter"
+              name="filter_checkbox"
+              type="checkbox"
+              data-test-result="skipped"
+              disabled
+            />
+            <span class="skipped">0 Skipped,</span>
+            <input
+              checked="true"
+              class="filter"
+              name="filter_checkbox"
+              type="checkbox"
+              data-test-result="xfailed"
+              disabled
+            />
+            <span class="xfailed">0 Expected failures,</span>
+            <input
+              checked="true"
+              class="filter"
+              name="filter_checkbox"
+              type="checkbox"
+              data-test-result="xpassed"
+              disabled
+            />
+            <span class="xpassed">0 Unexpected passes,</span>
+            <input
+              checked="true"
+              class="filter"
+              name="filter_checkbox"
+              type="checkbox"
+              data-test-result="error"
+              disabled
+            />
+            <span class="error">0 Errors,</span>
+            <input
+              checked="true"
+              class="filter"
+              name="filter_checkbox"
+              type="checkbox"
+              data-test-result="rerun"
+              disabled
+            />
+            <span class="rerun">0 Reruns</span>
+            <input
+              checked="true"
+              class="filter"
+              name="filter_checkbox"
+              type="checkbox"
+              data-test-result="retried"
+              disabled
+            />
+            <span class="retried">0 Retried,</span>
+          </div>
+          <div class="collapse">
+            <button id="show_all_details">Show all details</button
+            >&nbsp;/&nbsp;<button id="hide_all_details">
+              Hide all details
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="additional-summary summary"></div>
+      <div class="additional-summary postfix"></div>
+    </div>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable" data-column-type="result">Result</th>
+          <th class="sortable" data-column-type="testId">Test</th>
+          <th class="sortable" data-column-type="duration">Duration</th>
+          <th>Links</th>
+        </tr>
+      </thead>
+    </table>
+    <footer>
+      <script type="module" src="reports.js"></script>
+    </footer>
+  </body>
 </html>
-
