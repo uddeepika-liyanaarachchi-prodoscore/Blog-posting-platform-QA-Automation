@@ -1,4 +1,6 @@
 import pytest
+from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.firefox.webdriver import WebDriver
 from pages.navbar import Navbar
 from pages.login_page import LoginPage
 from pages.register_page import RegisterPage
@@ -8,7 +10,7 @@ class TestRegisterUI:
    """Test Suite: Register / Sign-Up View UI Components"""
 
 
-   def test_tc_reg_01_elements_presence(self, driver, live_server_url):
+   def test_tc_reg_01_elements_presence(self, driver: WebDriver | WebDriver, live_server_url: str):
        """TC_REG_01: Verify registration form inputs and submit button presence"""
        driver.get(live_server_url)
 
@@ -30,11 +32,11 @@ class TestRegisterUI:
 
 
        assert email_input.get_attribute("type") == "email"
-       assert "email" in email_input.get_attribute("placeholder").lower()
-       assert "password" in password_input.get_attribute("placeholder").lower()
+       assert "email" in email_input.get_attribute("placeholder").lower() # type: ignore
+       assert "password" in password_input.get_attribute("placeholder").lower() # type: ignore
 
 
-   def test_tc_reg_02_fill_registration_fields(self, driver, live_server_url):
+   def test_tc_reg_02_fill_registration_fields(self, driver: WebDriver | WebDriver, live_server_url: str):
        """TC_REG_02: Verify inputs accept typed values properly"""
        driver.get(live_server_url)
 
@@ -64,7 +66,7 @@ class TestRegisterUI:
        assert pwd_val == test_pass
 
 
-   def test_tc_reg_03_navigation_back_to_login(self, driver, live_server_url):
+   def test_tc_reg_03_navigation_back_to_login(self, driver: WebDriver | WebDriver, live_server_url: str):
        """TC_REG_03: Verify clicking 'Sign In' returns user to login view"""
        driver.get(live_server_url)
 
