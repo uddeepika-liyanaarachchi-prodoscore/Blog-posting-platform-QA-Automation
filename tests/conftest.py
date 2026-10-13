@@ -1,6 +1,6 @@
-from datetime import datetime
 import os
 import shutil
+from datetime import datetime
 import pytest
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
@@ -13,7 +13,6 @@ PRINT_AND_CSS_SNIPPET = """
 <style id="qa-dashboard-modern-styles">
  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-
  body {
    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
    background-color: #f8fafc !important;
@@ -23,7 +22,6 @@ PRINT_AND_CSS_SNIPPET = """
    padding: 30px 45px !important;
    line-height: 1.6 !important;
  }
-
 
  h1 {
    font-size: 24px !important;
@@ -36,7 +34,6 @@ PRINT_AND_CSS_SNIPPET = """
    letter-spacing: -0.5px !important;
  }
 
-
  h2 {
    font-size: 15px !important;
    font-weight: 600 !important;
@@ -47,13 +44,10 @@ PRINT_AND_CSS_SNIPPET = """
    letter-spacing: 0.5px !important;
  }
 
-
  p {
    color: #475569 !important;
  }
 
-
- /* Environment & Results Tables */
  table#environment, table#results-table {
    width: 100% !important;
    background: #ffffff !important;
@@ -66,7 +60,6 @@ PRINT_AND_CSS_SNIPPET = """
    margin-bottom: 30px !important;
  }
 
-
  th {
    background: #f1f5f9 !important;
    color: #334155 !important;
@@ -78,7 +71,6 @@ PRINT_AND_CSS_SNIPPET = """
    border-bottom: 1px solid #cbd5e1 !important;
  }
 
-
  td {
    padding: 13px 18px !important;
    border-bottom: 1px solid #f1f5f9 !important;
@@ -86,18 +78,14 @@ PRINT_AND_CSS_SNIPPET = """
    vertical-align: middle !important;
  }
 
-
  tr:last-child td {
    border-bottom: none !important;
  }
-
 
  tbody tr:hover {
    background-color: #f8fafc !important;
  }
 
-
- /* Status Badges */
  span.passed, .col-result.passed {
    background-color: #dcfce7 !important;
    color: #15803d !important;
@@ -108,7 +96,6 @@ PRINT_AND_CSS_SNIPPET = """
    display: inline-block !important;
    border: 1px solid #bbf7d0 !important;
  }
-
 
  span.failed, .col-result.failed {
    background-color: #fee2e2 !important;
@@ -121,7 +108,6 @@ PRINT_AND_CSS_SNIPPET = """
    border: 1px solid #fecaca !important;
  }
 
-
  span.skipped, .col-result.skipped {
    background-color: #fef3c7 !important;
    color: #b45309 !important;
@@ -133,8 +119,6 @@ PRINT_AND_CSS_SNIPPET = """
    border: 1px solid #fde68a !important;
  }
 
-
- /* Filters */
  div.filters {
    background: #ffffff !important;
    padding: 14px 20px !important;
@@ -148,8 +132,6 @@ PRINT_AND_CSS_SNIPPET = """
    font-weight: 500 !important;
  }
 
-
- /* Floating Print Toolbar */
  .qa-toolbar {
    position: fixed;
    top: 15px;
@@ -165,7 +147,6 @@ PRINT_AND_CSS_SNIPPET = """
    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.05);
    border: 1px solid #e2e8f0;
  }
-
 
  .qa-print-btn {
    background: linear-gradient(135deg, #2563eb, #1d4ed8);
@@ -184,13 +165,11 @@ PRINT_AND_CSS_SNIPPET = """
    transition: all 0.2s ease;
  }
 
-
  .qa-print-btn:hover {
    background: linear-gradient(135deg, #1d4ed8, #1e40af);
    transform: translateY(-1px);
    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.45);
  }
-
 
  .qa-badge-history {
    font-size: 11px;
@@ -201,7 +180,6 @@ PRINT_AND_CSS_SNIPPET = """
    padding: 4px 8px;
    border-radius: 4px;
  }
-
 
  @media print {
    .qa-toolbar, .no-print, div.filters {
@@ -227,7 +205,6 @@ PRINT_AND_CSS_SNIPPET = """
  }
 </style>
 
-
 <div class="qa-toolbar no-print">
  <span class="qa-badge-history">REPORT_TIMESTAMP_PLACEHOLDER</span>
  <button class="qa-print-btn" onclick="window.print()" title="Print report or save as PDF">
@@ -242,75 +219,67 @@ PRINT_AND_CSS_SNIPPET = """
 """
 
 def inject_styles_and_toolbar(report_path: str, timestamp_str: str) -> None:
-    """Injects custom UI styling and print toolbar into pytest-html report."""
     if not os.path.exists(report_path):
         return
 
     with open(report_path, "r", encoding="utf-8") as f:
         html_content = f.read()
 
-    customized_snippet = PRINT_AND_CSS_SNIPPET.replace("{{TIMESTAMP}}", timestamp_str)
+    customized_snippet = PRINT_AND_CSS_SNIPPET.replace("REPORT_TIMESTAMP_PLACEHOLDER", timestamp_str)
 
-    if "</body>" in html_content:
+    if "</head>" in html_content:
+        html_content = html_content.replace("</head>", f"{customized_snippet}\n</head>")
+    elif "</body>" in html_content:
         html_content = html_content.replace("</body>", f"{customized_snippet}\n</body>")
+    else:
+        html_content += customized_snippet
 
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(html_content)
 
 @pytest.fixture(scope="session")
 def live_server_url():
-   """Starts local static server for the Frontend repository and stops it after tests"""
-   server = SimpleFEServer()
-   url = server.start()
-   yield url
-   server.stop()
-
+    server = SimpleFEServer()
+    url = server.start()
+    yield url
+    server.stop()
 
 @pytest.fixture
 def driver():
-   """Initializes and tears down the Selenium WebDriver"""
-   browser = Config.BROWSER
+    browser = Config.BROWSER
 
+    if browser == "firefox":
+        options = FirefoxOptions()
+        if Config.HEADLESS:
+            options.add_argument("-headless")
+        options.add_argument("--width=1920")
+        options.add_argument("--height=1080")
+        options.set_preference("dom.webnotifications.enabled", False)
 
-   if browser == "firefox":
-       options = FirefoxOptions()
-       if Config.HEADLESS:
-           options.add_argument("-headless")
-       options.add_argument("--width=1920")
-       options.add_argument("--height=1080")
-       options.set_preference("dom.webnotifications.enabled", False)
+        gecko_path = shutil.which("geckodriver") or "/snap/bin/geckodriver"
+        if os.path.exists(gecko_path):
+            service = FirefoxService(executable_path=gecko_path)
+            drv = webdriver.Firefox(service=service, options=options)
+        else:
+            drv = webdriver.Firefox(options=options)
 
+    elif browser == "chrome":
+        options = ChromeOptions()
+        if Config.HEADLESS:
+            options.add_argument("--headless=new")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        drv = webdriver.Chrome(options=options)
+    else:
+        raise ValueError(f"Unsupported browser: {browser}")
 
-       gecko_path = shutil.which("geckodriver") or "/snap/bin/geckodriver"
-       if os.path.exists(gecko_path):
-           service = FirefoxService(executable_path=gecko_path)
-           drv = webdriver.Firefox(service=service, options=options)
-       else:
-           drv = webdriver.Firefox(options=options)
+    drv.implicitly_wait(Config.EXPLICIT_WAIT)
+    yield drv
+    drv.quit()
 
-
-   elif browser == "chrome":
-       options = ChromeOptions()
-       if Config.HEADLESS:
-           options.add_argument("--headless=new")
-       options.add_argument("--no-sandbox")
-       options.add_argument("--disable-dev-shm-usage")
-       drv = webdriver.Chrome(options=options)
-
-
-   else:
-       raise ValueError(f"Unsupported browser: {browser}")
-
-
-   drv.implicitly_wait(Config.EXPLICIT_WAIT)
-   yield drv
-   drv.quit()
-
-
-def pytest_sessionfinish(session, exitstatus):
-    """Executes after all tests complete and pytest-html report is generated."""
-    project_dir = os.path.dirname(os.path.abspath(__file__))
-    reports_dir = os.path.join(project_dir, "reports")
+def pytest_terminal_summary(terminalreporter, exitstatus, config):
+    root_dir = str(config.rootpath)
+    reports_dir = os.path.join(root_dir, "reports")
     archive_dir = os.path.join(reports_dir, "archive")
     os.makedirs(archive_dir, exist_ok=True)
 
@@ -323,7 +292,6 @@ def pytest_sessionfinish(session, exitstatus):
         archived_report = os.path.join(archive_dir, f"test_report_{timestamp_str}.html")
         shutil.copy2(latest_report, archived_report)
 
-        archived_count = len([f for f in os.listdir(archive_dir) if f.endswith(".html")])
-        print(f"\n[REPORT] Latest report updated: {latest_report}")
-        print(f"[REPORT] Archived run saved: {archived_report}")
-        print(f"[REPORT] Total historical runs saved: {archived_count}\n")
+        terminalreporter.write_sep("=", "CUSTOM QA REPORT READY")
+        terminalreporter.write_line(f"Latest Report : file://{latest_report}")
+        terminalreporter.write_line(f"Archived Run  : file://{archived_report}")
