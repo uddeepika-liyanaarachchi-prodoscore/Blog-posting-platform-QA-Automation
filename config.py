@@ -1,8 +1,8 @@
 import os
+from dotenv import load_dotenv
+load_dotenv();
 
 class Config:
-   # URL to the Frontend under test
-   # By default, points to local test server serving the FE repository
    FE_DIR = os.path.abspath(
        os.path.join(os.path.dirname(__file__), "..", "Blog-Poster-Project-FE")
    )
@@ -11,8 +11,8 @@ class Config:
 
 
    # Browser configurations
-   BROWSER = os.getenv("BROWSER", "firefox").lower()
-   HEADLESS = os.getenv("HEADLESS", "true").lower() in ("true", "1", "yes")
+   BROWSER = os.getenv("BROWSER", "").lower()
+   HEADLESS = os.getenv("HEADLESS", "").lower() in ("true", "1", "yes")
    EXPLICIT_WAIT = int(os.getenv("EXPLICIT_WAIT", "10"))
 
 
