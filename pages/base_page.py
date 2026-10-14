@@ -62,7 +62,7 @@ class BasePage:
 
 
    def get_attribute(self, locator, attr_name: str) -> str:
-       return self.find(locator).get_attribute(attr_name)
+       return self.find(locator).get_attribute(attr_name) # type: ignore
 
 
    def get_alert_text(self, timeout=3) -> str:

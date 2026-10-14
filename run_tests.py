@@ -1,64 +1,34 @@
-
 import os
 import sys
-import subprocess
+import pytest
 
 
-def main():
-   project_dir = os.path.dirname(os.path.abspath(__file__))
-   os.chdir(project_dir)
+def main() -> int:
+    # Ensure execution happens from project root directory
+    project_dir = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(project_dir)
 
+    # Ensure reports directory exists before running tests
+    os.makedirs(os.path.join(project_dir, "reports"), exist_ok=True)
 
-   reports_dir = os.path.join(project_dir, "reports")
-   os.makedirs(reports_dir, exist_ok=True)
-   report_file = os.path.join(reports_dir, "test_report.html")
+    latest_report = os.path.join("reports", "test_report.html")
 
+    # Base pytest arguments
+    cmd_args = [
+        "tests",
+        "-v",
+        f"--html={latest_report}",
+        "--self-contained-html",
+    ]
 
-   print("=" * 70)
-   print("  🚀 Blog Poster Frontend QA Automation (Selenium + UV + Pytest)")
-   print(f"  Report Target: {report_file}")
-   print("=" * 70)
+    # Append any custom CLI flags passed to run_tests.py (e.g. -k test_login)
+    if len(sys.argv) > 1:
+        cmd_args.extend(sys.argv[1:])
 
-
-   # Use uv run pytest to execute the test suite dynamically
-   cmd = [
-       "uv", "run", "pytest",
-       "tests",
-       "-v",
-       f"--html={report_file}",
-       "--self-contained-html",
-   ]
-
-
-   # If extra arguments were passed from CLI, forward them to pytest
-   if len(sys.argv) > 1:
-       cmd.extend(sys.argv[1:])
-
-
-   # Ensure uv is in PATH
-   env = os.environ.copy()
-   local_bin = os.path.expanduser("~/.local/bin")
-   if local_bin not in env.get("PATH", ""):
-       env["PATH"] = f"{local_bin}:{env.get('PATH', '')}"
-
-
-   result = subprocess.run(cmd, env=env)
-
-
-   print("\n" + "=" * 70)
-   if result.returncode == 0:
-       print("  ✅ All Frontend tests passed successfully!")
-   else:
-       print(f"  ⚠️ Test execution completed with exit code: {result.returncode}")
-   print(f"  📊 Dynamic HTML Test Report generated at:\n     file://{report_file}")
-   print("=" * 70)
-
-
-   return result.returncode
+    # Run pytest directly in-process without subprocess or OS path injection
+    return pytest.main(cmd_args)
 
 
 if __name__ == "__main__":
-   sys.exit(main())
-
-
+    sys.exit(main())
 

@@ -1,14 +1,10 @@
 # 🧪 Blog Poster Frontend QA Automation
 
-
 A simple, lightweight, and modern **Frontend Functional QA Automation** project for the **Blog Posting Platform**, built with **Selenium WebDriver**, **Python**, **UV package manager**, and **Pytest** following the **Page Object Model (POM)** design pattern.
-
 
 ---
 
-
 ## 🌟 Key Features
-
 
 - **Frontend Focused**: Specifically built and tailored for the Blog Posting Platform Frontend (`app/index.html`, CSS, and JavaScript modules).
 - **Package Management via `uv`**: Ultra-fast dependency resolution and virtual environment management via Astral's `uv`.
@@ -17,12 +13,9 @@ A simple, lightweight, and modern **Frontend Functional QA Automation** project 
 - **Zero Mock Overengineering**: Directly tests real frontend DOM elements, native HTML5 validations, view switching, modal controls, and `localStorage` session state.
 - **Headless Firefox Execution**: Runs automatically in headless mode via `geckodriver`.
 
-
 ---
 
-
 ## 📁 Project Structure
-
 
 ```
 blogposter-qa-automation/
@@ -53,50 +46,47 @@ blogposter-qa-automation/
 └── README.md                   # Project Documentation
 ```
 
-
 ---
-
 
 ## 🚀 Getting Started
 
-
 ### 1. Prerequisites
+
 - Python 3.12+
 - `uv` installed (`curl -LsSf https://astral.sh/uv/install.sh | sh`)
 - Firefox browser installed
 
-
 ### 2. Run All Tests & Generate Dynamic Report
 
-
 Simply run:
+
 ```bash
 python3 run_tests.py
 ```
+
 Or directly with `uv`:
+
 ```bash
 uv run pytest tests -v --html=reports/test_report.html --self-contained-html
 ```
 
-
 ---
-
 
 ## 📊 Viewing the Test Report
 
-
 Open the generated HTML report in any web browser:
+
 ```bash
 firefox reports/test_report.html
 ```
+
 File Path: `reports/test_report.html`
 
-
 The report includes:
+
 - Live timestamp and environment details
 - Total tests executed, pass/fail counts, and success rate
 - Exact execution time for every individual test case
 - Filterable test result grid
-
-
-
+- **Interactive "Print / Save as PDF" Button**: Located at top-right to export the report to PDF or print directly without toolbar clutter.
+- **Automatic History Archiving**: Previous reports are never overwritten! Every run is archived with a timestamp in `reports/archive/test_report_YYYY-MM-DD_HH-MM-SS.html`.
